@@ -15,8 +15,10 @@ void loop()
   
     String serialMessage = Serial.readStringUntil('\n');
     if(serialMessage != ""){
-    String memUsage = serialMessage.substring(serialMessage.indexOf(";") + 1, serialMessage.length()); 
-    String cpuUsage = serialMessage.substring(0, serialMessage.indexOf(";")); 
+    String memUsage = serialMessage.substring(serialMessage.indexOf("]") + 1, serialMessage.length()); 
+    String cpuUsage = serialMessage.substring(0, serialMessage.indexOf(";"));
+    String cpuClock = serialMessage.substring(serialMessage.indexOf(";") + 1, serialMessage.indexOf("["));
+    String diskUsage = serialMessage.substring(serialMessage.indexOf("[") + 1, serialMessage.indexOf("]"));
     if (cpuUsage.toInt() > 40) {
       lcd.setRGB(255, 0, 0);
     } else if (cpuUsage.toInt() > 20 ) {
@@ -26,9 +28,9 @@ void loop()
     }
     lcd.clear();
     lcd.setCursor(0, 0);
-    lcd.print("CPU Usage: " + String(cpuUsage) + "%");
+    lcd.print("CPU:" + cpuUsage + "% " + cpuClock + "MHz");
     lcd.setCursor(0, 1);
-    lcd.print("RAM Usage: " + String(memUsage) + "%");
+    lcd.print("RAM:" + memUsage + "% " + "HD: " + diskUsage + "%");
     }
   }
 }
